@@ -154,7 +154,7 @@ PUTCHAR_PROTOTYPE
 	
 }
 /**
-  * @brief  This function handles USART1 IDLE interrupt.
+  * @brief  This function handles USART1 IDLE interrupt DMA recive.
   */
 void UsartReceive_IDLE(UART_HandleTypeDef *huart)  
 {  
@@ -167,10 +167,13 @@ void UsartReceive_IDLE(UART_HandleTypeDef *huart)
         temp = huart1.hdmarx->Instance->CNDTR;//DMA搬运剩余
         UsartType.RX_Size =  RX_LEN - temp;//接收长度
         UsartType.RX_flag=1;//中断接受触发标志
+			
         HAL_UART_Receive_DMA(&huart1,UsartType.RX_pData,RX_LEN);//RX DMA 接收  
     }  
 }  
-
+/***
+* @brief USART DMA init
+*/
 void USART_Init(void)
 {
 	//MX_USART1_UART_Init();
@@ -180,6 +183,18 @@ void USART_Init(void)
  
 }
 //printf("\n\r  the USART Initialized \n\r");
+
+void USART_Callback(void)
+{
+		if(UsartType.RX_flag)// Receive flag
+		{
+			UsartType.RX_flag=0;// clean flag
+			
+			printf("\r\nrecevied: \r\n");
+			HAL_UART_Transmit(&huart1, UsartType.RX_pData, UsartType.RX_Size, 100);		
+		} 
+}
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

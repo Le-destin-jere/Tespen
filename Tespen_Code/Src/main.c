@@ -120,15 +120,11 @@ int main(void)
 		HAL_Delay(1000);
 		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
 		HAL_Delay(1000);
-		ADC_Get_Value();
 		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
 		
-		if(UsartType.RX_flag)// Receive flag
-		{
-			printf("\r\n recevied: \r\n");
-			UsartType.RX_flag=0;	// clean flag
-			HAL_UART_Transmit(&huart1, UsartType.RX_pData, UsartType.RX_Size, 0xFFFF);		
-		} 
+		ADC_Get_Value();
+		USART_Callback();
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

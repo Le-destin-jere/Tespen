@@ -19,37 +19,45 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __usart_H
 #define __usart_H
+
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
+    /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/* USER CODE BEGIN Includes */
+    /* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
+    /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
 
-/* USER CODE BEGIN Private defines */
-	 
-#define RX_LEN 512 //接收字符长度  
-typedef struct  
-{  
-uint8_t  RX_flag:1;        //IDLE receive flag
-uint16_t RX_Size;          //receive length
-uint8_t  RX_pData[RX_LEN]; //DMA receive buffer
-}USART_RECEIVETYPE;  
-extern USART_RECEIVETYPE UsartType; 
+    /* USER CODE BEGIN Private defines */
 
-/* USER CODE END Private defines */
+#define RX_LEN 512 //接收字符长度  
+typedef struct
+{
+	
+		uint8_t  RX_flag:1;        // receive flag
+		uint8_t  RX_state;         // recevie state
+		uint16_t counter;          // 
+		uint16_t clock;			       // 
+		uint16_t RX_Size;          // receive length
+		uint8_t  RX_pData[RX_LEN]; // receive buffer
+	
+} USART_RECEIVETYPE;
+
+extern USART_RECEIVETYPE UsartType;
+
+    /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void UsartReceive_IDLE(UART_HandleTypeDef *huart);
 void USART_Init(void);
+void USART_Callback(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
